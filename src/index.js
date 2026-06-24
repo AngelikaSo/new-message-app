@@ -64,6 +64,37 @@ function App() {
   return (
     <>
       <div className="app-container">
+        <div className="header">
+          {" "}
+          <HeartContainer />
+          <NewMessageBtn />
+        </div>
+        <div className="message-data-container">
+          <StartScreen />
+        </div>
+      </div>
+    </>
+  );
+}
+
+// Build StartingScreen component and implemet the logic there
+// The app start with a black screen with a white envelope in the center after loading the page the sound of incomming message and the screen changes to envelope with 1 message icon
+
+function StartScreen() {
+  // return <ClosedEnvelope />;
+  // return <NewMessageEnvelope />;
+  return (
+    <>
+      <OpenEnvelope {...myData[1]} />
+      <DeterminationMessage />
+    </>
+  );
+}
+
+function SendMessage() {
+  return (
+    <>
+      <div className="app-container">
         <div className="header-style">
           <HeartContainer />
           <NewMessageBtn />
@@ -77,9 +108,6 @@ function App() {
   );
 }
 
-// Build StartingScreen component and implemet the logic there
-// The app start with a black screen with a white envelope in the center after loading the page the sound of incomming message and the screen changes to envelope with 1 message icon
-
 function ClosedEnvelope() {
   return <img className="envelope" src="closed-env.png" alt="envelope" />;
 }
@@ -92,6 +120,15 @@ function OpenEnvelope(props) {
 
 function NewMessageEnvelope() {
   return <img className="envelope" src="new-message-env.png" alt="envelope" />;
+}
+
+function DeterminationMessage() {
+  return (
+    <div className="text-box">
+      Seeing this fills you with
+      <span className="colorRed"> DETERMINATION</span>
+    </div>
+  );
 }
 
 function ReadMessage() {

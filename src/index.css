@@ -16,16 +16,32 @@ p {
 }
 
 .app-container {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  box-sizing: border-box;
   background-color: black;
   color: white;
   padding: 20px;
-  height: 100vh;
 }
 
-.header-style {
+.message-data-container {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  overflow: hidden;
+  align-items: center;
+  box-sizing: border-box;
+  background-color: black;
+  color: white;
+  gap: 30px;
+}
+
+.header {
+  display: flex;
   justify-content: space-between;
+  min-height: 32px;
 }
 
 .heart-container {
@@ -48,7 +64,7 @@ p {
 }
 
 .envelope {
-  padding: 100px 0 0;
+  padding: 100px 0 0 0;
   width: 100px;
   image-rendering: pixelated;
   image-rendering: crisp-edges;
