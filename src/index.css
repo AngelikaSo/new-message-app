@@ -1,13 +1,99 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: "DotumChe", "Malgun Gothic", monospace;
+
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+@font-face {
+  font-family: "MercyFont";
+  src: url("MERCY.ttf") format("truetype");
+}
+
+p {
+  margin: 0;
+}
+
+.app-container {
+  background-color: black;
+  color: white;
+  padding: 20px;
+  height: 100vh;
+}
+
+.header-style {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.heart-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.heart {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  -ms-interpolation-mode: nearest-neighbor;
+}
+
+.center-envelope {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+}
+
+.envelope {
+  padding: 100px 0 0;
+  width: 100px;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  -ms-interpolation-mode: nearest-neighbor;
+}
+
+.text-box {
+  border: 2px solid white;
+  padding: 30px;
+  max-width: 400px;
+}
+
+button {
+  background-color: transparent;
+  border: 2px solid rgb(255, 255, 115);
+  color: rgb(255, 255, 115);
+  font-weight: bold;
+  font-family: "MercyFont", sans-serif;
+  font-size: 14px;
+}
+
+.colorRed {
+  color: #ff5252;
+}
+
+.colorPurple {
+  color: #ba59ba;
+}
+
+.colorBlue {
+  color: #5050f9;
+}
+
+.colorGreen {
+  color: #6abc6a;
+}
+
+.colorYellow {
+  color: #ffff73;
+}
+
+.colorOrange {
+  color: #f9a914;
+}
+
+.colorLightBlue {
+  color: #87e1d8;
 }

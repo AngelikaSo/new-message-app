@@ -2,13 +2,152 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 
+const myData = [
+  {
+    id: "1",
+    name: "INTEGRITY",
+    envelopeIcon: "blue-open-env.png",
+    text: "* Despite the pressure to change, you stayed true to yourself. You are filled with ",
+    heartIcon: "heart-blue.png",
+  },
+
+  {
+    id: "2",
+    name: "DETERMINATION",
+    envelopeIcon: "red-open-env.png",
+    text: "* No obstacle could extinguish the fire that drove you forward. You are filled with ",
+    heartIcon: "heart-red.png",
+  },
+
+  {
+    id: "3",
+    name: "JUSTICE",
+    envelopeIcon: "yellow-open-env.png",
+    text: "* Despite having every reason to hate, you refused to become cruel. You are filled with ",
+    heartIcon: "heart-yellow.png",
+  },
+
+  {
+    id: "4",
+    name: "PERSERVERANCE",
+    envelopeIcon: "purple-open-env.png",
+    text: "* Despite every ending telling you to stop, you kept walking. You are filled with ",
+    heartIcon: "heart-purple.png",
+  },
+
+  {
+    id: "5",
+    name: "KINDNESS",
+    envelopeIcon: "green-open-env.png",
+    text: "* You chose compassion where others chose indifference and resentment. You are filled with ",
+    heartIcon: "heart-green.png",
+  },
+
+  {
+    id: "6",
+    name: "BRAVERY",
+    envelopeIcon: "orange-open-env.png",
+    text: "* Fear stood before you, but you found the strength to move forward. You are filled with ",
+    heartIcon: "heart-orange.png",
+  },
+
+  {
+    id: "7",
+    name: "PATIENCE",
+    envelopeIcon: "light-blue-open-env.png",
+    text: "* You understood that some things cannot be rushed, no matter how badly you wanted them. You are filled with ",
+    heartIcon: "heart-light-blue.png",
+  },
+];
+
 function App() {
   return (
     <>
-      <div className="app-container"></div>
+      <div className="app-container">
+        <div className="header-style">
+          <HeartContainer />
+          <NewMessageBtn />
+        </div>
+
+        <div>
+          <ReadMessage />
+        </div>
+      </div>
     </>
   );
 }
+
+// Build StartingScreen component and implemet the logic there
+// The app start with a black screen with a white envelope in the center after loading the page the sound of incomming message and the screen changes to envelope with 1 message icon
+
+function ClosedEnvelope() {
+  return <img className="envelope" src="closed-env.png" alt="envelope" />;
+}
+
+function OpenEnvelope(props) {
+  return (
+    <img className="envelope" src={props.envelopeIcon} alt="open-envelope" />
+  );
+}
+
+function NewMessageEnvelope() {
+  return <img className="envelope" src="new-message-env.png" alt="envelope" />;
+}
+
+function ReadMessage() {
+  return (
+    <div className="center-envelope">
+      <OpenEnvelope {...myData[3]} />
+      <Message {...myData[3]} />
+    </div>
+  );
+}
+
+function Message(props) {
+  return (
+    <div className="text-box">
+      {props.text}
+      <span className="colorRed">{props.name}</span>
+    </div>
+  );
+}
+
+function Heart() {
+  return <img className="heart" src="heart-red.png" alt="heart red" />;
+}
+
+function HeartContainer() {
+  return (
+    <div className="heart-container">
+      <Heart />
+      <Heart />
+      <Heart />
+    </div>
+  );
+}
+
+function NewMessageBtn() {
+  return <button>SEND MESSAGE</button>;
+}
+
+// components needed:
+// closed envelope - png
+// envelope with number 1
+// open envelope with heart
+// text box with different tekst
+// button "Send Message"
+// heart image
+// hearts box on the left upper corner (max 3 hearts)
+
+// flow
+// screen 1: black screen with a white envelope in the center
+// screen 2: after loading the page the sound of incomming message and the screen changes to envelope with 1 message icon
+// screen 3: After user clicks on the envelope the screen changes to open envelope with heart and text box below with a message.
+// after user clicks outside or anywhere the screen changes
+// screen 4: closed envelope in the center, 1 heart in the upper left corner, and a button "Send message" showing.
+// screen 5: if user clicks btn the envelope changes to the one with 1 message, and button is disabled until the message is open
+// screen 6: open message showing randomly selected message and heart color.
+// user can send up to 2 messages daily, after midnight the app restart to the screen 1.
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
