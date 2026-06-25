@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
+import { useState } from "react";
 
 const myData = [
   {
@@ -63,14 +64,50 @@ const myData = [
 function App() {
   return (
     <>
+      <OpenEnvelopeScreen />
+    </>
+  );
+}
+
+// screen 2: functionality - onClick event on the enveloper icon changes the UI - envelope icon changes and the text bellow is displayed.
+// screen 3 and 4: onClick on the text or the open envelope the envelope changes to closed envelope and the header is displayed
+
+function OpenEnvelopeScreen() {
+  // first I set up the current image state
+  const [imageSrc, setImageSrc] = useState("new-message-env.png");
+  const [textMsg, setTextMsg] = useState("");
+  const [header, setHeader] = useState(" ");
+
+  const targetDetermination = myData[1];
+  // here I set the new image and a message on a click event
+  function handleImageClick() {
+    setImageSrc(targetDetermination.envelopeIcon);
+    setTextMsg(<DeterminationMessage />);
+  }
+
+  // here I set a closed envelope image, removing the txt message, and showing the header component
+  function handleMessageRead() {
+    setImageSrc("closed-env.png");
+    setTextMsg(" ");
+    setHeader(<Header />);
+  }
+
+  return (
+    <>
       <div className="app-container">
-        <div className="header">
-          {" "}
-          <HeartContainer />
-          <NewMessageBtn />
-        </div>
+        <div className="header">{header}</div>
         <div className="message-data-container">
-          <StartScreen />
+          <img
+            src={imageSrc}
+            alt="new-message-envelope"
+            className="envelope"
+            // if there is a textMessage on click it triggers the handleMessageRead function otherwise handleImageClick function
+            onClick={textMsg ? handleMessageRead : handleImageClick}
+            style={{ cursor: "pointer" }}
+          />
+          <div onClick={handleMessageRead} style={{ cursor: "pointer" }}>
+            {textMsg}
+          </div>
         </div>
       </div>
     </>
@@ -81,14 +118,7 @@ function App() {
 // The app start with a black screen with a white envelope in the center after loading the page the sound of incomming message and the screen changes to envelope with 1 message icon
 
 function StartScreen() {
-  // return <ClosedEnvelope />;
-  // return <NewMessageEnvelope />;
-  return (
-    <>
-      <OpenEnvelope {...myData[1]} />
-      <DeterminationMessage />
-    </>
-  );
+  return;
 }
 
 function SendMessage() {
@@ -140,6 +170,7 @@ function ReadMessage() {
   );
 }
 
+// component for the dynamic message from the JSON array
 function Message(props) {
   return (
     <div className="text-box">
@@ -149,22 +180,33 @@ function Message(props) {
   );
 }
 
+// single heart icon - should be dynamic, because the hearts will be taken from the JSON array
 function Heart() {
   return <img className="heart" src="heart-red.png" alt="heart red" />;
 }
 
+// hearts container to pass the 3 randomly selected hearts from the selected envelope
 function HeartContainer() {
   return (
     <div className="heart-container">
-      <Heart />
-      <Heart />
       <Heart />
     </div>
   );
 }
 
+// the button
 function NewMessageBtn() {
   return <button>SEND MESSAGE</button>;
+}
+
+// combined hearts container and send message button into single header
+function Header() {
+  return (
+    <>
+      <HeartContainer />
+      <NewMessageBtn />
+    </>
+  );
 }
 
 // components needed:
