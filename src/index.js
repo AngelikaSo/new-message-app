@@ -118,41 +118,58 @@ function StartScreen() {
 }
 
 function SendMessage() {
-  // checking if a new message has arrived
+  // seting up the message state to false - so no new message
   const [hasNewMessage, setHasNewMessage] = useState(false);
 
-  // first I set up the current image state
+  // seting up the current image and message state
   const [imageSrc, setImageSrc] = useState("closed-env.png");
   const [textMsg, setTextMsg] = useState("");
 
-  const targetDetermination = myData[1];
+  // taking the data from the JSON array
+  const [currentData, setCurrentData] = useState(null);
+  const targetData = myData[currentData];
 
-  // the function handle the recieved message
+  // set a state of hearts collection in the array so they will display next to each other
+  const [heartsCollection, setHeartsCollection] = useState([]);
+
+  // function that handles the recieved message and new envelope image
   function handleBtnClick() {
+    setCurrentData(Math.floor(Math.random() * myData.length));
     setHasNewMessage(true);
     setImageSrc("new-message-env.png");
   }
 
-  // here I set the new image and a message on a click event
+  // function that handles new open envelope image and a message
   function handleImageClick() {
     if (hasNewMessage) {
-      setImageSrc(targetDetermination.envelopeIcon);
-      setTextMsg(<DeterminationMessage />);
+      setImageSrc(targetData.envelopeIcon);
+      setTextMsg(targetData.text);
     }
   }
 
-  // here I set a closed envelope image, removing the txt message, and showing the header component
+  // function that handles the closing evnelope - setting new image, no message, and resets the hasMessage state
   function handleMessageRead() {
+    setHeartsCollection([...heartsCollection, targetData.heartIcon]);
     setHasNewMessage(false);
     setImageSrc("closed-env.png");
-    setTextMsg(" ");
+    setTextMsg("");
   }
 
   return (
     <>
       <div className="app-container">
         <div className="header">
-          <HeartContainer />
+          <div className="heart-container">
+            {/* Loop through the array and display the collected hearts next to each other*/}
+            {heartsCollection.map((heartIconSrc, index) => (
+              <img
+                key={index}
+                src={heartIconSrc}
+                alt="Collected Heart"
+                className="heart-icon"
+              />
+            ))}
+          </div>
           <NewMessageBtn
             onClick={handleBtnClick}
             style={{ cursor: "pointer" }}
@@ -222,14 +239,15 @@ function Message(props) {
 }
 
 // single heart icon - should be dynamic, because the hearts will be taken from the JSON array
-function Heart() {
-  return <img className="heart" src="heart-red.png" alt="heart red" />;
+function Heart({ heart }) {
+  return <img className="heart" src={heart} alt="heart red" />;
 }
 
 // hearts container to pass the 3 randomly selected hearts from the selected envelope
 function HeartContainer() {
   return (
     <div className="heart-container">
+      <img className="heart" src="heart-red.png" alt="heart red" />;
       <Heart />
     </div>
   );
