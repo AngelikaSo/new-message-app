@@ -62,11 +62,7 @@ const myData = [
 ];
 
 function App() {
-  return (
-    <>
-      <OpenEnvelopeScreen />
-    </>
-  );
+  return <>{<Header /> ? <SendMessage /> : <OpenEnvelopeScreen />}</>;
 }
 
 // screen 2: functionality - onClick event on the enveloper icon changes the UI - envelope icon changes and the text bellow is displayed.
@@ -122,16 +118,61 @@ function StartScreen() {
 }
 
 function SendMessage() {
+  // checking if a new message has arrived
+  const [hasNewMessage, setHasNewMessage] = useState(false);
+
+  // first I set up the current image state
+  const [imageSrc, setImageSrc] = useState("closed-env.png");
+  const [textMsg, setTextMsg] = useState("");
+
+  const targetDetermination = myData[1];
+
+  // the function handle the recieved message
+  function handleBtnClick() {
+    setHasNewMessage(true);
+    setImageSrc("new-message-env.png");
+  }
+
+  // here I set the new image and a message on a click event
+  function handleImageClick() {
+    if (hasNewMessage) {
+      setImageSrc(targetDetermination.envelopeIcon);
+      setTextMsg(<DeterminationMessage />);
+    }
+  }
+
+  // here I set a closed envelope image, removing the txt message, and showing the header component
+  function handleMessageRead() {
+    setHasNewMessage(false);
+    setImageSrc("closed-env.png");
+    setTextMsg(" ");
+  }
+
   return (
     <>
       <div className="app-container">
-        <div className="header-style">
+        <div className="header">
           <HeartContainer />
-          <NewMessageBtn />
+          <NewMessageBtn
+            onClick={handleBtnClick}
+            style={{ cursor: "pointer" }}
+          />
         </div>
 
-        <div>
-          <ReadMessage />
+        <div className="message-data-container">
+          <img
+            src={imageSrc}
+            alt="new-message-envelope"
+            className="envelope"
+            // if there is a textMessage on click it triggers the handleMessageRead function otherwise handleImageClick function
+            onClick={textMsg ? handleMessageRead : handleImageClick}
+            style={{ cursor: "pointer" }}
+          />
+          {
+            <div onClick={handleMessageRead} style={{ cursor: "pointer" }}>
+              {textMsg}
+            </div>
+          }
         </div>
       </div>
     </>
@@ -195,8 +236,12 @@ function HeartContainer() {
 }
 
 // the button
-function NewMessageBtn() {
-  return <button>SEND MESSAGE</button>;
+function NewMessageBtn({ onClick, style }) {
+  return (
+    <button onClick={onClick} style={style}>
+      Send Message
+    </button>
+  );
 }
 
 // combined hearts container and send message button into single header
