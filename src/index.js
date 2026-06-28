@@ -10,6 +10,7 @@ const myData = [
     envelopeIcon: "blue-open-env.png",
     text: "* Despite the pressure to change, you stayed true to yourself. You are filled with ",
     heartIcon: "heart-blue.png",
+    color: "#5050f9",
   },
 
   {
@@ -18,6 +19,7 @@ const myData = [
     envelopeIcon: "red-open-env.png",
     text: "* No obstacle could extinguish the fire that drove you forward. You are filled with ",
     heartIcon: "heart-red.png",
+    color: "#ff5252",
   },
 
   {
@@ -26,6 +28,7 @@ const myData = [
     envelopeIcon: "yellow-open-env.png",
     text: "* Despite having every reason to hate, you refused to become cruel. You are filled with ",
     heartIcon: "heart-yellow.png",
+    color: "#ffff73",
   },
 
   {
@@ -34,6 +37,7 @@ const myData = [
     envelopeIcon: "purple-open-env.png",
     text: "* Despite every ending telling you to stop, you kept walking. You are filled with ",
     heartIcon: "heart-purple.png",
+    color: "#ba59ba",
   },
 
   {
@@ -42,6 +46,7 @@ const myData = [
     envelopeIcon: "green-open-env.png",
     text: "* You chose compassion where others chose indifference and resentment. You are filled with ",
     heartIcon: "heart-green.png",
+    color: "#6abc6a",
   },
 
   {
@@ -50,6 +55,7 @@ const myData = [
     envelopeIcon: "orange-open-env.png",
     text: "* Fear stood before you, but you found the strength to move forward. You are filled with ",
     heartIcon: "heart-orange.png",
+    color: "#f9a914",
   },
 
   {
@@ -58,6 +64,7 @@ const myData = [
     envelopeIcon: "light-blue-open-env.png",
     text: "* You understood that some things cannot be rushed, no matter how badly you wanted them. You are filled with ",
     heartIcon: "heart-light-blue.png",
+    color: "#87e1d8",
   },
 ];
 
@@ -124,17 +131,26 @@ function SendMessage() {
   // seting up the current image and message state
   const [imageSrc, setImageSrc] = useState("closed-env.png");
   const [textMsg, setTextMsg] = useState("");
+  const [textName, setTextName] = useState("");
+  const [soulColor, setSoulColor] = useState("");
 
   // taking the data from the JSON array
   const [currentData, setCurrentData] = useState(null);
-  const targetData = myData[currentData];
+  const targetData = currentData;
 
   // set a state of hearts collection in the array so they will display next to each other
   const [heartsCollection, setHeartsCollection] = useState([]);
 
+  // creating a copy of array to control if item from an array was already used
+  const [myDataPool, setMyDataPool] = useState(myData);
+
   // function that handles the recieved message and new envelope image
   function handleBtnClick() {
-    setCurrentData(Math.floor(Math.random() * myData.length));
+    const randomIndex = Math.floor(Math.random() * myDataPool.length);
+    const chosen = myDataPool[randomIndex];
+    const newPool = myDataPool.filter((item) => item !== chosen);
+    setMyDataPool(newPool);
+    setCurrentData(chosen);
     setHasNewMessage(true);
     setImageSrc("new-message-env.png");
   }
@@ -144,6 +160,8 @@ function SendMessage() {
     if (hasNewMessage) {
       setImageSrc(targetData.envelopeIcon);
       setTextMsg(targetData.text);
+      setTextName(targetData.name);
+      setSoulColor(targetData.color);
     }
   }
 
@@ -172,7 +190,9 @@ function SendMessage() {
           </div>
           <NewMessageBtn
             onClick={handleBtnClick}
-            style={{ cursor: "pointer" }}
+            className={hasNewMessage ? "btn-disabled" : "btn-active"}
+            disabled={hasNewMessage} // this phisically disable the button action
+            style={{ cursor: hasNewMessage ? "not-allowed" : "pointer" }}
           />
         </div>
 
@@ -185,11 +205,18 @@ function SendMessage() {
             onClick={textMsg ? handleMessageRead : handleImageClick}
             style={{ cursor: "pointer" }}
           />
-          {
-            <div onClick={handleMessageRead} style={{ cursor: "pointer" }}>
+          {textMsg && (
+            <div
+              onClick={handleMessageRead}
+              style={{ cursor: "pointer" }}
+              className="text-box"
+            >
               {textMsg}
+              <span style={{ color: soulColor, fontWeight: "bold" }}>
+                {textName}
+              </span>
             </div>
-          }
+          )}
         </div>
       </div>
     </>
@@ -229,11 +256,11 @@ function ReadMessage() {
 }
 
 // component for the dynamic message from the JSON array
-function Message(props) {
+function Message({ textMsg, textName, soulColor }) {
   return (
     <div className="text-box">
-      {props.text}
-      <span className="colorRed">{props.name}</span>
+      <p>{textMsg}</p>
+      <span className={soulColor}>{textName}</span>
     </div>
   );
 }
@@ -254,9 +281,14 @@ function HeartContainer() {
 }
 
 // the button
-function NewMessageBtn({ onClick, style }) {
+function NewMessageBtn({ onClick, className, disabled, style }) {
   return (
-    <button onClick={onClick} style={style}>
+    <button
+      onClick={onClick}
+      className={className}
+      disabled={disabled}
+      style={style}
+    >
       Send Message
     </button>
   );
