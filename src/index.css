@@ -77,6 +77,22 @@ p {
   max-width: 400px;
 }
 
+.final-screen {
+  border: 2px solid white;
+  padding: 30px;
+  max-width: 400px;
+  white-space: pre-line;
+  position: relative;
+}
+
+.corner-heart {
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
+  width: 24px;
+  height: auto;
+}
+
 button {
   background-color: transparent;
   border: 2px solid rgb(255, 255, 115);
@@ -95,30 +111,7 @@ button {
   filter: grayscale(100%);
 }
 
-.colorRed {
-  color: #ff5252;
-}
-
-.colorPurple {
-  color: #ba59ba;
-}
-
-.colorBlue {
-  color: #5050f9;
-}
-
-.colorGreen {
-  color: #6abc6a;
-}
-
-.colorYellow {
-  color: #ffff73;
-}
-
-.colorOrange {
-  color: #f9a914;
-}
-
-.colorLightBlue {
-  color: #87e1d8;
+.btn-game-over {
+  opacity: 0.5;
+  filter: grayscale(100%);
 }

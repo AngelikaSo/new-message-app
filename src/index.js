@@ -3,6 +3,12 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import { useState } from "react";
 
+// What else to do:
+// Integrate the first screen and the envelope opening with the entire send message component and functionality
+// save everything in localstorage
+// reset the entire app at 00:00
+// refactor code - create separate components and use props
+
 const myData = [
   {
     id: "1",
@@ -167,7 +173,7 @@ function SendMessage() {
 
   // function that handles the closing evnelope - setting new image, no message, and resets the hasMessage state
   function handleMessageRead() {
-    setHeartsCollection([...heartsCollection, targetData.heartIcon]);
+    setHeartsCollection([...heartsCollection, targetData]);
     setHasNewMessage(false);
     setImageSrc("closed-env.png");
     setTextMsg("");
@@ -179,10 +185,10 @@ function SendMessage() {
         <div className="header">
           <div className="heart-container">
             {/* Loop through the array and display the collected hearts next to each other*/}
-            {heartsCollection.map((heartIconSrc, index) => (
+            {heartsCollection.map((heartObj, index) => (
               <img
                 key={index}
-                src={heartIconSrc}
+                src={heartObj.heartIcon}
                 alt="Collected Heart"
                 className="heart-icon"
               />
@@ -190,32 +196,69 @@ function SendMessage() {
           </div>
           <NewMessageBtn
             onClick={handleBtnClick}
-            className={hasNewMessage ? "btn-disabled" : "btn-active"}
-            disabled={hasNewMessage} // this phisically disable the button action
-            style={{ cursor: hasNewMessage ? "not-allowed" : "pointer" }}
+            className={
+              heartsCollection.length === 3
+                ? "btn-game-over"
+                : hasNewMessage
+                  ? "btn-disabled"
+                  : "btn-active"
+            }
+            disabled={hasNewMessage || heartsCollection.length === 3} // this phisically disable the button action
+            style={{
+              cursor:
+                hasNewMessage || heartsCollection.length === 3
+                  ? "not-allowed"
+                  : "pointer",
+            }}
           />
         </div>
 
         <div className="message-data-container">
-          <img
-            src={imageSrc}
-            alt="new-message-envelope"
-            className="envelope"
-            // if there is a textMessage on click it triggers the handleMessageRead function otherwise handleImageClick function
-            onClick={textMsg ? handleMessageRead : handleImageClick}
-            style={{ cursor: "pointer" }}
-          />
-          {textMsg && (
-            <div
-              onClick={handleMessageRead}
-              style={{ cursor: "pointer" }}
-              className="text-box"
-            >
-              {textMsg}
-              <span style={{ color: soulColor, fontWeight: "bold" }}>
-                {textName}
+          {/* conditionally render final screen if 3 heards are collected*/}
+          {heartsCollection.length === 3 ? (
+            <div className="final-screen">
+              * Seeing how far you've come today... it fills you with{" "}
+              {heartsCollection.map((item, index) => (
+                <span key={item.id || index}>
+                  <strong style={{ color: item.color }}>{item.name}</strong>
+                  {index < heartsCollection.length - 1 ? ", " : ""}
+                  {index === heartsCollection.length - 2 ? " and " : ""}
+                </span>
+              ))}
+              {"\n\n"}* Stay DETERMINED{" "}
+              <span>
+                <img
+                  src="red-heart.gif"
+                  alt="red heart"
+                  className="corner-heart"
+                />
               </span>
             </div>
+          ) : (
+            <>
+              <img
+                src={imageSrc}
+                alt="new-message-envelope"
+                className="envelope"
+                // if there is a textMessage on click it triggers the handleMessageRead function otherwise handleImageClick function
+                onClick={textMsg ? handleMessageRead : handleImageClick}
+                style={{
+                  cursor: textMsg || hasNewMessage ? "pointer" : "not-allowed",
+                }}
+              />
+              {textMsg && (
+                <div
+                  onClick={handleMessageRead}
+                  style={{ cursor: "pointer" }}
+                  className="text-box"
+                >
+                  {textMsg}
+                  <span style={{ color: soulColor, fontWeight: "bold" }}>
+                    {textName}
+                  </span>
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>
